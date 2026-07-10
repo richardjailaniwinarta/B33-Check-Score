@@ -88,7 +88,7 @@
 <body>
 
 <header>
-  <div class="badge">Batch 32</div>
+  <div class="badge">Batch 33</div>
   <h1>Student <span>Score</span><br>Lookup</h1>
   <p class="subtitle">Masukkan Student ID untuk melihat progress dan total score kamu.</p>
 </header>
@@ -194,16 +194,21 @@
 </div>
 
 <footer>
-  Batch 32 . Made by Richard J Winarta &nbsp;·&nbsp; <code style="background:var(--surface2);padding:1px 5px;border-radius:4px">@assistby.rjw</code>
+  Batch 33 . Made by Richard J Winarta &nbsp;·&nbsp; <code style="background:var(--surface2);padding:1px 5px;border-radius:4px">@assistby.rjw</code>
 </footer>
 
 <script>
 // ─── CONFIG ────────────────────────────────────────────────────────────────
-const _d = ["b3Nzd3Q9KCg=","Y2hkdClgaGhga2IpZA==","aGoodHd1YmZjdG9iYnN0KGM=","KGIoNVdGRF8qNnFUQ1JxbUR/RH0w","QkRVUEo3U2BfcFQ=","dGF0SnVEV24+NCo0SHA=","MndRYlNCKndjRA==","clVGdEhCMmthfUFVQl9AQWA=","dWJ1YzZxPm5JfW9uNEBO","NSh3cmU4YG5jOj80MTIyNzM1MSE=","dG5pYGtiOnN1cmIhaHI=","c3dyczpkdHE="];
-const _r = (s) => atob(s).split('').map(c => String.fromCharCode(c.charCodeAt(0) ^ 0x07)).join('');
-const CSV_FILE = _d.map(_r).join('');
+// Nama file CSV harus sama persis dengan yang ada di repo GitHub kamu
+const CSV_FILE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSDUvjCxCz7ECRWM0TgXwSsfsMrCPi93-3Ow5pVeTE-pdCuRAsOE5lfzFREXGFgrerd1v9iNzhi3GI2/pub?gid=836550426&single=true&output=csv';
 
+// Kolom mana yang dipakai (index 0-based, sesuai urutan kolom di CSV)
+// Default sesuai struktur file B32:
+// 0=StudentID, 1=Name, 12=%Completion, 13=TotalScore, 16=Portfolio
 const COL = { id: 0, name: 1, completion: 12, score: 13, approval: 15, portfolio: 16 };
+
+// Baris header di CSV ada di baris ke berapa? (0-based)
+// File B32 punya 1 baris kosong di atas, lalu header di baris ke-1
 const HEADER_ROW = 1;
 // ───────────────────────────────────────────────────────────────────────────
 
