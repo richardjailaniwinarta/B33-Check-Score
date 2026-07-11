@@ -198,20 +198,16 @@
 </footer>
 
 <script>
-// ─── CONFIG ────────────────────────────────────────────────────────────────
-// URL CSV disimpan dalam bentuk base64 supaya tidak polos terlihat di view-source.
-// Catatan: ini cuma penyamaran ringan, bukan enkripsi—siapa pun yang paham bisa
-// men-decode base64 dalam sekali klik lewat console browser.
 const CSV_FILE_B33 = 'aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvZS8yUEFDWC0xdlNEVXZqQ3hDejdFQ1JXTTBUZ1h3U3Nmc01yQ1BpOTMtM093NXBWZVRFLXBkQ3VSQXNPRTVsZnpGUkVYR0ZncmVyZDF2OWlOemhpM0dJMi9wdWI/Z2lkPTgzNjU1MDQyNiZzaW5nbGU9dHJ1ZSZvdXRwdXQ9Y3N2';
 const CSV_FILE = atob(CSV_FILE_B33);
 
 // Kolom mana yang dipakai (index 0-based, sesuai urutan kolom di CSV)
-// Default sesuai struktur file B32:
+// Default sesuai struktur file B33:
 // 0=StudentID, 1=Name, 12=%Completion, 13=TotalScore, 16=Portfolio
 const COL = { id: 0, name: 1, completion: 12, score: 13, approval: 15, portfolio: 16 };
 
 // Baris header di CSV ada di baris ke berapa? (0-based)
-// File B32 punya 1 baris kosong di atas, lalu header di baris ke-1
+// File B33 punya 1 baris kosong di atas, lalu header di baris ke-1
 const HEADER_ROW = 1;
 // ───────────────────────────────────────────────────────────────────────────
 
