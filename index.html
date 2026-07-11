@@ -199,8 +199,11 @@
 
 <script>
 // ─── CONFIG ────────────────────────────────────────────────────────────────
-// Nama file CSV harus sama persis dengan yang ada di repo GitHub kamu
-const CSV_FILE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSDUvjCxCz7ECRWM0TgXwSsfsMrCPi93-3Ow5pVeTE-pdCuRAsOE5lfzFREXGFgrerd1v9iNzhi3GI2/pub?gid=836550426&single=true&output=csv';
+// URL CSV disimpan dalam bentuk base64 supaya tidak polos terlihat di view-source.
+// Catatan: ini cuma penyamaran ringan, bukan enkripsi—siapa pun yang paham bisa
+// men-decode base64 dalam sekali klik lewat console browser.
+const CSV_FILE_B33 = 'aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvZS8yUEFDWC0xdlNEVXZqQ3hDejdFQ1JXTTBUZ1h3U3Nmc01yQ1BpOTMtM093NXBWZVRFLXBkQ3VSQXNPRTVsZnpGUkVYR0ZncmVyZDF2OWlOemhpM0dJMi9wdWI/Z2lkPTgzNjU1MDQyNiZzaW5nbGU9dHJ1ZSZvdXRwdXQ9Y3N2';
+const CSV_FILE = atob(CSV_FILE_B33);
 
 // Kolom mana yang dipakai (index 0-based, sesuai urutan kolom di CSV)
 // Default sesuai struktur file B32:
