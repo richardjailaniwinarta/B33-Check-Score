@@ -306,7 +306,7 @@ function showResult(student) {
   document.getElementById('resultCard').style.animation = '';
 
   const pct = parseFloat(student.completion);
-  const maxDisplay = maxScore > 0 ? maxScore : 5400;
+  const maxDisplay = 5400; // ganti manual sesuai target kamu
 
   document.getElementById('avatarEl').textContent       = getInitials(student.name);
   document.getElementById('studentName').textContent    = student.name;
