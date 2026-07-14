@@ -58,6 +58,9 @@
   .metric-card.approval-approved::before { background: var(--green); }
   .metric-card.approval-notapproved::before { background: var(--red); }
   .metric-card.approval-pending::before { background: var(--amber); }
+  .metric-card.approval-minor::before { background: var(--amber); }
+  .metric-card.approval-major::before { background: var(--red); }
+  .metric-card.approval-nosubmission::before { background: var(--text2); }
   .metric-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2); margin-bottom: 0.5rem; }
   .metric-value { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
   .metric-card.completion .metric-value { color: var(--green-light); }
@@ -65,6 +68,9 @@
   .metric-card.approval-approved .metric-value { color: var(--green-light); }
   .metric-card.approval-notapproved .metric-value { color: var(--red); }
   .metric-card.approval-pending .metric-value { color: var(--amber); }
+  .metric-card.approval-minor .metric-value { color: var(--amber); }
+  .metric-card.approval-major .metric-value { color: var(--red); }
+  .metric-card.approval-nosubmission .metric-value { color: var(--text2); }
   .approval-icon { font-size: 1.5rem; line-height: 1; margin-bottom: 0.4rem; display: block; }
   .metric-sub { font-size: 0.75rem; color: var(--text2); margin-top: 0.4rem; }
   .progress-bar-wrap { margin-top: 0.6rem; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); overflow: hidden; }
@@ -83,6 +89,43 @@
     .card-body.has-approval { grid-template-columns: 1fr 1fr; }
     .card-body.has-approval .metric-card:last-child { grid-column: 1 / -1; }
   }
+
+  /* ── See more / detail trigger button ─────────────────────────────── */
+  .detail-trigger { width: 100%; background: var(--surface2); border: none; border-top: 0.5px solid var(--border); color: var(--accent2); font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.85rem; padding: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s, color 0.15s; }
+  .detail-trigger:hover { background: rgba(127,119,221,0.14); color: var(--text); }
+  .detail-trigger svg { transition: transform 0.15s; }
+  .detail-trigger:hover svg { transform: translateX(3px); }
+
+  /* ── Detail overlay page ───────────────────────────────────────────── */
+  .detail-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 999; overflow-y: auto; display: none; padding: 1.5rem 1rem 3rem; }
+  .detail-overlay.active { display: block; }
+  .detail-wrap { max-width: 640px; margin: 0 auto; }
+  .detail-back { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--text2); font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; padding: 6px 4px; margin-bottom: 1.5rem; transition: color 0.15s; }
+  .detail-back:hover { color: var(--text); }
+  .detail-profile { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .detail-avatar { width: 60px; height: 60px; min-width: 60px; border-radius: 18px; background: linear-gradient(135deg, var(--accent), #534ab7); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+  .detail-name-row { display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; }
+  .detail-name { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; word-break: break-word; }
+  .detail-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .dbadge { display: inline-flex; align-items: center; gap: 5px; font-size: 0.72rem; font-weight: 600; padding: 4px 12px; border-radius: 100px; letter-spacing: 0.01em; white-space: nowrap; }
+  .dbadge.id { font-family: 'DM Mono', monospace; background: var(--surface2); color: var(--text2); }
+  .dbadge.pro { background: rgba(127,119,221,0.15); color: var(--accent2); border: 0.5px solid rgba(175,169,236,0.3); }
+  .dbadge.sa { background: rgba(29,158,117,0.15); color: var(--green-light); border: 0.5px solid rgba(93,202,165,0.25); }
+  .dbadge.category { background: rgba(239,159,39,0.12); color: var(--amber); border: 0.5px solid rgba(239,159,39,0.3); }
+  .detail-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.75rem; }
+  .dstat { background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 1.25rem; text-align: center; }
+  .dstat-val { font-size: 1.9rem; font-weight: 700; color: var(--green-light); letter-spacing: -0.02em; }
+  .dstat.pending .dstat-val { color: var(--text2); }
+  .dstat-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2); margin-top: 0.3rem; }
+  .detail-section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text2); margin-bottom: 0.85rem; }
+  .dtask { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 1rem 1.1rem; margin-bottom: 0.75rem; }
+  .dtask-info { min-width: 0; }
+  .dtask-group { font-size: 0.72rem; color: var(--text2); margin-bottom: 3px; }
+  .dtask-title { font-size: 0.92rem; font-weight: 600; line-height: 1.35; }
+  .dtask-score { flex-shrink: 0; display: inline-flex; align-items: center; gap: 5px; font-size: 0.78rem; font-weight: 700; padding: 6px 13px; border-radius: 100px; white-space: nowrap; }
+  .dtask-score.done { background: rgba(29,158,117,0.15); color: var(--green-light); border: 0.5px solid rgba(93,202,165,0.25); }
+  .dtask-score.pending { background: rgba(255,255,255,0.05); color: var(--text2); border: 0.5px solid var(--border2); }
+  .detail-loading { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 4rem 1rem; }
 </style>
 </head>
 <body>
@@ -190,6 +233,57 @@
         Portfolio
       </a>
     </div>
+    <button class="detail-trigger" id="detailTriggerBtn" type="button">
+      Lihat Detail Progress Tugas
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Detail progress overlay (per-task breakdown) -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-wrap">
+    <button class="detail-back" id="detailBackBtn" type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      Kembali
+    </button>
+
+    <div class="detail-loading" id="detailLoading" style="display:none">
+      <div class="spinner"></div>
+      <p style="font-size:0.85rem;color:var(--text2)">Memuat detail tugas…</p>
+    </div>
+
+    <div class="state-msg" id="detailErrorMsg" style="display:none">
+      <div class="icon-wrap-red">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e24b4a" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+      </div>
+      <h3>Data Tidak Ditemukan</h3>
+      <p>Silahkan Konfirmasi ke Admin.</p>
+    </div>
+
+    <div id="detailContent" style="display:none">
+      <div class="detail-profile">
+        <div class="detail-avatar" id="detailAvatar"></div>
+        <div class="detail-name-row">
+          <div class="detail-name" id="detailName"></div>
+          <div class="detail-badges" id="detailBadges"></div>
+        </div>
+      </div>
+
+      <div class="detail-stats">
+        <div class="dstat">
+          <div class="dstat-val" id="detailDoneCount"></div>
+          <div class="dstat-label">Selesai</div>
+        </div>
+        <div class="dstat pending">
+          <div class="dstat-val" id="detailPendingCount"></div>
+          <div class="dstat-label">Belum</div>
+        </div>
+      </div>
+
+      <div class="detail-section-label">Progress Tugas</div>
+      <div id="detailTaskList"></div>
+    </div>
   </div>
 </div>
 
@@ -213,6 +307,7 @@ const HEADER_ROW = 1;
 
 let lookup = {};
 let maxScore = 0;
+let currentStudentId = null;
 
 // ── CSV parser sederhana yang handle quoted fields (misal nama dengan koma)
 function parseCSV(text) {
@@ -289,17 +384,20 @@ function getInitials(name) {
 }
 
 function getStatus(pct) {
-  if (pct >= 100) return { label: 'Congrat 100% Completion', cls: 'excellent' };
-  if (pct >= 80)  return { label: 'Syarat Terpenuhi',  cls: 'good' };
-  if (pct <= 79)  return { label: 'Syarat Belum Terpenuhi', cls: 'warning' };
+  if (isNaN(pct))   return { label: 'Data Belum Tersedia', cls: 'warning' };
+  if (pct >= 100)   return { label: 'Congrat 100% Completion', cls: 'excellent' };
+  if (pct >= 80)    return { label: 'Syarat Terpenuhi',  cls: 'good' };
+  return { label: 'Syarat Belum Terpenuhi', cls: 'warning' };
 }
 
 function getScoreStatus(score) {
-  if (score >= 5400) return { label: 'Congrat Full Score! 🎉', cls: 'excellent' };
+  if (isNaN(score))   return { label: 'Data Belum Tersedia', cls: 'warning' };
+  if (score >= 5400)  return { label: 'Congrat Full Score! 🎉', cls: 'excellent' };
   return { label: 'Maaf Belum Full Score', cls: 'warning' };
 }
 
 function showResult(student) {
+  currentStudentId = student.id;
   show('resultCard');
   document.getElementById('resultCard').style.animation = 'none';
   void document.getElementById('resultCard').offsetWidth;
@@ -343,7 +441,11 @@ function showResult(student) {
   const approvalIcon = document.getElementById('approvalIcon');
   const cardBody     = document.querySelector('.card-body');
 
-  const rawApproval  = (student.approval || '').toLowerCase().trim();
+  const rawApproval = (student.approval || '')
+    .toLowerCase()
+    .replace(/\u00A0/g, ' ')   // non-breaking space (sering ikut ke-copy dari Google Sheets) -> spasi biasa
+    .replace(/\s+/g, ' ')      // rapatkan spasi ganda
+    .trim();
 
   if (rawApproval === '') {
     // Tidak ada data approval — sembunyikan card
@@ -353,18 +455,37 @@ function showResult(student) {
     approvalCard.style.display = 'block';
     cardBody.classList.add('has-approval');
 
-    if (rawApproval === 'approved') {
-      approvalCard.className = 'metric-card approval-approved';
-      approvalIcon.textContent = '✅';
-      approvalVal.textContent  = 'Approved';
-      approvalSub.textContent  = 'Portfolio diterima';
-    } else if (rawApproval === 'not approved') {
+    // Cocokkan berdasarkan kata kunci (bukan exact match) supaya tahan terhadap
+    // typo kecil di sheet (mis. "Major Revisiom"), spasi ganda, atau beda kapitalisasi.
+    // Urutan pengecekan penting: yang paling spesifik dicek lebih dulu supaya
+    // "not approved" tidak ikut kena kata kunci "approved".
+    if (rawApproval.includes('no submission') || rawApproval.includes('belum submit')) {
+      approvalCard.className = 'metric-card approval-nosubmission';
+      approvalIcon.textContent = '🚫';
+      approvalVal.textContent  = 'No Submission';
+      approvalSub.textContent  = 'Belum ada submission';
+    } else if (rawApproval.includes('not approved')) {
       approvalCard.className = 'metric-card approval-notapproved';
       approvalIcon.textContent = '❌';
       approvalVal.textContent  = 'Not Approved';
       approvalSub.textContent  = 'Portfolio belum diterima';
+    } else if (rawApproval.includes('minor')) {
+      approvalCard.className = 'metric-card approval-minor';
+      approvalIcon.textContent = '✏️';
+      approvalVal.textContent  = 'Minor Revision';
+      approvalSub.textContent  = 'Perlu revisi kecil';
+    } else if (rawApproval.includes('major')) {
+      approvalCard.className = 'metric-card approval-major';
+      approvalIcon.textContent = '⚠️';
+      approvalVal.textContent  = 'Major Revision';
+      approvalSub.textContent  = 'Perlu revisi besar';
+    } else if (rawApproval.includes('approved')) {
+      approvalCard.className = 'metric-card approval-approved';
+      approvalIcon.textContent = '✅';
+      approvalVal.textContent  = 'Approved';
+      approvalSub.textContent  = 'Portfolio diterima';
     } else {
-      // Nilai lain dianggap pending/belum dinilai
+      // Nilai lain / belum sempat diisi dropdown-nya dianggap pending review
       approvalCard.className = 'metric-card approval-pending';
       approvalIcon.textContent = '⏳';
       approvalVal.textContent  = student.approval;
@@ -398,6 +519,165 @@ clearBtn.addEventListener('click', function() {
 
 searchInput.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') { this.value = ''; clearBtn.classList.remove('visible'); show('stateEmpty'); }
+});
+
+// ══════════════════════════════════════════════════════════════════════════
+// DETAIL PROGRESS TUGAS (per-task breakdown) — sumber CSV kedua
+// ══════════════════════════════════════════════════════════════════════════
+
+// CSV kedua: satu baris kosong, lalu header di baris ke-1 (0-based), sama seperti CSV utama.
+const CSV_FILE_TASKS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSgIZahfNSGJViRmjNmUIJo6FSfQqpvf9yEGLRzUkMb2DvSO9H0cixX18OJvsRwjQpLp1UjJVCa8zY1/pub?output=csv';
+const HEADER_ROW_TASKS = 1;
+
+// Kolom-kolom profil di CSV kedua
+const TCOL = { id: 0, name: 1, package: 2, sa: 3, service: 4, difficulty: 5 };
+
+// Setiap task memakai 3 kolom berurutan mulai dari index 6:
+// [ Skor, Status(TRUE/FALSE), Skor Maksimal(konstanta, ada di header) ]
+const TASK_START_COL = 6;
+const TASK_TRIPLET_SIZE = 3;
+
+// Sebagian task (25A/B/C, 26A/B/C, dst) hanya berlaku untuk 1 dari 3 track,
+// tergantung "Chosen Highlight Service" siswa.
+const SERVICE_TRACK = { 'EMAIL MARKETING': 'A', 'LEAD GENERATION': 'B', 'SMM': 'C' };
+
+let tasksMeta = null;          // [{ scoreCol, statusCol, group, title, letter, max }, ...]
+let taskDataLookup = null;     // { studentId: rawRow }
+let tasksLoadPromise = null;
+
+// Parse "25A. EM Module 1 Task" / "1. Lesson 1 task 1: Write 5-10 achievements"
+// menjadi { num, letter, group, title }
+function parseTaskLabel(text) {
+  const m = (text || '').match(/^(\d+)([A-Za-z]?)\.\s*(.*)$/);
+  if (!m) return { num: '', letter: '', group: 'Task', title: text || '' };
+  const num = m[1], letter = m[2] || '', rest = (m[3] || '').trim();
+  const lessonMatch = rest.match(/^Lesson\s+(\d+)\s*Task\s+(\d+)\s*:\s*(.+)$/i);
+  if (lessonMatch) {
+    return { num, letter, group: `Lesson ${lessonMatch[1]} · Task ${lessonMatch[2]}`, title: lessonMatch[3].trim() };
+  }
+  return { num, letter, group: `Task ${num}${letter} · #${num}${letter}`, title: rest.replace(/^:\s*/, '') };
+}
+
+function buildTasksMeta(headerRow) {
+  const meta = [];
+  for (let i = TASK_START_COL; i + 2 < headerRow.length; i += TASK_TRIPLET_SIZE) {
+    const labelRaw = headerRow[i + 1] || '';
+    if (!labelRaw) continue;
+    const parsed = parseTaskLabel(labelRaw);
+    const max = parseInt((headerRow[i + 2] || '0').replace(/[^\d]/g, '')) || 0;
+    meta.push({ scoreCol: i, statusCol: i + 1, group: parsed.group, title: parsed.title, letter: parsed.letter, max });
+  }
+  return meta;
+}
+
+function loadTasksCSV() {
+  if (tasksLoadPromise) return tasksLoadPromise;
+  tasksLoadPromise = fetch(CSV_FILE_TASKS)
+    .then(res => {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.text();
+    })
+    .then(text => {
+      const rows = parseCSV(text);
+      tasksMeta = buildTasksMeta(rows[HEADER_ROW_TASKS]);
+      taskDataLookup = {};
+      rows.forEach((row, i) => {
+        if (i <= HEADER_ROW_TASKS) return;
+        const id = (row[TCOL.id] || '').trim();
+        if (!id) return;
+        taskDataLookup[id] = row;
+      });
+    })
+    .catch(err => { tasksLoadPromise = null; throw err; }); // izinkan retry kalau gagal
+  return tasksLoadPromise;
+}
+
+function getTasksForStudent(row) {
+  const service = (row[TCOL.service] || '').trim().toUpperCase();
+  const letter = SERVICE_TRACK[service] || null;
+  return tasksMeta
+    .filter(t => t.letter ? t.letter === letter : true)
+    .map(t => {
+      const completed = (row[t.statusCol] || '').trim().toUpperCase() === 'TRUE';
+      const scoreRaw = row[t.scoreCol];
+      const score = completed ? (parseInt((scoreRaw || '0').replace(/[^\d]/g, '')) || 0) : 0;
+      return { group: t.group, title: t.title, max: t.max, score, completed };
+    });
+}
+
+function humanizeService(s) {
+  if (!s) return '';
+  return s.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function escapeHtml(str) {
+  return (str || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function openDetail(studentId) {
+  document.getElementById('detailContent').style.display = 'none';
+  document.getElementById('detailErrorMsg').style.display = 'none';
+  document.getElementById('detailLoading').style.display = 'flex';
+  document.getElementById('detailOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  loadTasksCSV().then(() => {
+    const row = taskDataLookup[studentId];
+    if (!row) throw new Error('Student tidak ditemukan di data task');
+
+    const tasks = getTasksForStudent(row);
+    const doneCount = tasks.filter(t => t.completed).length;
+    const pendingCount = tasks.length - doneCount;
+
+    const displayName = (row[TCOL.name] || (lookup[studentId] ? lookup[studentId].name : '') || '').trim();
+    document.getElementById('detailAvatar').textContent = getInitials(displayName || '?');
+    document.getElementById('detailName').textContent = displayName.toUpperCase();
+
+    const pkg = (row[TCOL.package] || '').trim();
+    const sa = (row[TCOL.sa] || '').trim();
+    const service = humanizeService((row[TCOL.service] || '').trim());
+
+    let badgesHtml = `<span class="dbadge id">${escapeHtml(studentId)}</span>`;
+    if (pkg) badgesHtml += `<span class="dbadge pro">${escapeHtml(pkg)}</span>`;
+    if (sa) badgesHtml += `<span class="dbadge sa">👤 SA: ${escapeHtml(sa)}</span>`;
+    if (service) badgesHtml += `<span class="dbadge category">★ ${escapeHtml(service)}</span>`;
+    document.getElementById('detailBadges').innerHTML = badgesHtml;
+
+    document.getElementById('detailDoneCount').textContent = doneCount;
+    document.getElementById('detailPendingCount').textContent = pendingCount;
+
+    document.getElementById('detailTaskList').innerHTML = tasks.map(t => `
+      <div class="dtask">
+        <div class="dtask-info">
+          <div class="dtask-group">${escapeHtml(t.group)}</div>
+          <div class="dtask-title">${escapeHtml(t.title)}</div>
+        </div>
+        <span class="dtask-score ${t.completed ? 'done' : 'pending'}">
+          ${t.completed ? '✓ Skor: ' + t.score + '/' + t.max : 'Belum'}
+        </span>
+      </div>
+    `).join('');
+
+    document.getElementById('detailLoading').style.display = 'none';
+    document.getElementById('detailContent').style.display = 'block';
+  }).catch(() => {
+    document.getElementById('detailLoading').style.display = 'none';
+    document.getElementById('detailErrorMsg').style.display = 'flex';
+  });
+}
+
+function closeDetail() {
+  document.getElementById('detailOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('detailTriggerBtn').addEventListener('click', function() {
+  if (!currentStudentId) return;
+  openDetail(currentStudentId);
+});
+document.getElementById('detailBackBtn').addEventListener('click', closeDetail);
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && document.getElementById('detailOverlay').classList.contains('active')) closeDetail();
 });
 
 // Mulai load CSV saat halaman terbuka
