@@ -526,7 +526,8 @@ searchInput.addEventListener('keydown', function(e) {
 // ══════════════════════════════════════════════════════════════════════════
 
 // CSV kedua: satu baris kosong, lalu header di baris ke-1 (0-based), sama seperti CSV utama.
-const CSV_FILE_TASKS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSgIZahfNSGJViRmjNmUIJo6FSfQqpvf9yEGLRzUkMb2DvSO9H0cixX18OJvsRwjQpLp1UjJVCa8zY1/pub?output=csv';
+const CSV_FILE_TASKS_B33 = 'aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvZS8yUEFDWC0xdlNnSVphaGZOU0dKVmlSbWpObVVJSm82RlNmUXFwdmY5eUVHTFJ6VWtNYjJEdlNPOUgwY2l4WDE4T0p2c1J3alFwTHAxVWpKVkNhOHpZMS9wdWI/b3V0cHV0PWNzdg==';
+const CSV_FILE_TASKS = atob(CSV_FILE_TASKS_B33);
 const HEADER_ROW_TASKS = 1;
 
 // Kolom-kolom profil di CSV kedua
