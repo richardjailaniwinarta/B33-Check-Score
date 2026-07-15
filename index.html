@@ -559,6 +559,23 @@ function parseTaskLabel(text) {
   return { num, letter, group: `Task ${num}${letter} · #${num}${letter}`, title: rest.replace(/^:\s*/, '') };
 }
 
+// Sebagian task per-track (mis. "35. EM Feedback", "38. LG Feedback", "36. SMM Feedback")
+// tidak memakai format nomor+huruf (25A/25B/25C) seperti task lain, jadi hurufnya
+// tidak bisa dideteksi dari nomornya. Sebagai fallback, deteksi track dari kata kunci
+// EM / LG / SMM yang ada di judul task tersebut.
+const TRACK_KEYWORDS = [
+  { re: /\bEM\b/i, letter: 'A' },
+  { re: /\bLG\b/i, letter: 'B' },
+  { re: /\bSMM\b/i, letter: 'C' },
+];
+
+function inferLetterFromTitle(title) {
+  for (const k of TRACK_KEYWORDS) {
+    if (k.re.test(title)) return k.letter;
+  }
+  return '';
+}
+
 function buildTasksMeta(headerRow) {
   const meta = [];
   for (let i = TASK_START_COL; i + 2 < headerRow.length; i += TASK_TRIPLET_SIZE) {
@@ -566,7 +583,8 @@ function buildTasksMeta(headerRow) {
     if (!labelRaw) continue;
     const parsed = parseTaskLabel(labelRaw);
     const max = parseInt((headerRow[i + 2] || '0').replace(/[^\d]/g, '')) || 0;
-    meta.push({ scoreCol: i, statusCol: i + 1, group: parsed.group, title: parsed.title, letter: parsed.letter, max });
+    const letter = parsed.letter || inferLetterFromTitle(parsed.title);
+    meta.push({ scoreCol: i, statusCol: i + 1, group: parsed.group, title: parsed.title, letter, max });
   }
   return meta;
 }
