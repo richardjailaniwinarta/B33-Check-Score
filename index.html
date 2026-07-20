@@ -494,12 +494,15 @@ function showResult(student) {
 
     document.getElementById('bonusInfo').textContent = programText || 'Kamu memiliki akses ke bonus program berikut.';
     const bonusBtn = document.getElementById('bonusBtn');
+    const bonusInfoEl = document.getElementById('bonusInfo');
     if (infoText && /^https?:\/\//i.test(infoText)) {
       bonusBtn.href = infoText;
       bonusBtn.style.display = 'inline-flex';
+      bonusInfoEl.style.marginBottom = '0.9rem';
     } else {
       bonusBtn.style.display = 'none';
-      if (!programText && infoText) document.getElementById('bonusInfo').textContent = infoText;
+      bonusInfoEl.style.marginBottom = '0';
+      if (!programText && infoText) bonusInfoEl.textContent = infoText;
     }
     bonusBoxEl.style.display = 'block';
   }).catch(() => { /* gagal muat bonus program — diamkan saja, tidak kritikal */ });
