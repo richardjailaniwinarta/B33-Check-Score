@@ -116,13 +116,11 @@
 
 <div class="result-area" id="resultArea">
 
-  <!-- Loading state -->
   <div class="spinner-wrap" id="stateLoading">
     <div class="spinner"></div>
     <p style="font-size:0.85rem; color:var(--text2);">Memuat data dari CSV…</p>
   </div>
 
-  <!-- Error state (CSV not found) -->
   <div class="state-msg" id="stateError" style="display:none">
     <div class="icon-wrap-red">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e24b4a" stroke-width="2" stroke-linecap="round">
@@ -133,7 +131,6 @@
     <p id="stateErrorMsg">Pastikan file <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:0.8rem">data.csv</code> ada di folder yang sama dengan <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:0.8rem">index.html</code></p>
   </div>
 
-  <!-- Empty state -->
   <div class="state-msg" id="stateEmpty" style="display:none">
     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
@@ -142,7 +139,6 @@
     <p>Masukkan Student ID untuk melihat hasil scoring kamu.</p>
   </div>
 
-  <!-- Not found state -->
   <div class="state-msg" id="stateNotFound" style="display:none">
     <div class="icon-wrap-red">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e24b4a" stroke-width="2" stroke-linecap="round">
@@ -153,7 +149,6 @@
     <p>Periksa kembali ID kamu dan coba lagi.</p>
   </div>
 
-  <!-- Result card -->
   <div class="result-card" id="resultCard">
     <div class="card-header">
       <div class="avatar" id="avatarEl"></div>
@@ -208,24 +203,14 @@
 const CSV_FILE_B34 = 'aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvZS8yUEFDWC0xdlJPX0xJVE1CRnNpZUVEdVI1azlHQ2JNQV9ndEdWM0xHUmFPdTFUNmRXdlk1SXlyUGtMLXJyeUlrMUhfNTdIemdJQ2tpU2pab292NlNCdC9wdWI/Z2lkPTgzNjU1MDQyNiZzaW5nbGU9dHJ1ZSZvdXRwdXQ9Y3N2';
 const CSV_FILE = atob(CSV_FILE_B34);
 
-// Kolom mana yang dipakai (index 0-based, sesuai urutan kolom di CSV)
-// Default sesuai struktur file B34:
-// 0=StudentID, 1=Name, 12=%Completion, 13=TotalScore, 16=Portfolio
 const COL = { id: 0, name: 1, completion: 12, score: 13, approval: 15, portfolio: 16 };
 
-// Baris header di CSV ada di baris ke berapa? (0-based)
-// File B34 punya 1 baris kosong di atas, lalu header di baris ke-1
 const HEADER_ROW = 1;
-// ───────────────────────────────────────────────────────────────────────────
 
 let lookup = {};
 let maxScore = 0;
 let currentStudentId = null;
 
-// ── CSV parser sederhana yang handle quoted fields (misal nama dengan koma)
-// ── CSV parser sederhana yang handle quoted fields (misal nama dengan koma,
-// escaped quote "" di dalam field, dan newline di dalam field yang dikutip —
-// contoh: cell Google Sheets yang isinya multi-baris seperti "Bonus Program")
 function parseCSV(text) {
   const rows = [];
   let row = [];
@@ -235,7 +220,7 @@ function parseCSV(text) {
     const c = text[i];
     if (inQ) {
       if (c === '"') {
-        if (text[i + 1] === '"') { cur += '"'; i++; }   // escaped quote ""
+        if (text[i + 1] === '"') { cur += '"'; i++; }
         else { inQ = false; }
       } else {
         cur += c;
@@ -243,7 +228,7 @@ function parseCSV(text) {
     } else {
       if (c === '"') { inQ = true; }
       else if (c === ',') { row.push(cur.trim()); cur = ''; }
-      else if (c === '\r') { /* abaikan, ditangani saat ketemu \n */ }
+      else if (c === '\r') { }
       else if (c === '\n') { row.push(cur.trim()); cur = ''; rows.push(row); row = []; }
       else { cur += c; }
     }
@@ -261,9 +246,9 @@ async function loadCSV() {
     const rows = parseCSV(text);
 
     rows.forEach((row, i) => {
-      if (i <= HEADER_ROW) return;       // skip baris kosong & header
+      if (i <= HEADER_ROW) return;
       const id = (row[COL.id] || '').trim();
-      if (!id) return;                   // skip baris kosong
+      if (!id) return;
 
       const scoreNum = parseInt((row[COL.score] || '0').replace(/[^\d]/g, '')) || 0;
       if (scoreNum > maxScore) maxScore = scoreNum;
@@ -278,7 +263,6 @@ async function loadCSV() {
       };
     });
 
-    // Selesai loading — aktifkan search
     show('stateEmpty');
     document.getElementById('searchInput').disabled = false;
     document.getElementById('searchInput').focus();
@@ -329,7 +313,7 @@ function showResult(student) {
   document.getElementById('resultCard').style.animation = '';
 
   const pct = parseFloat(student.completion);
-  const maxDisplay = 5400; // ganti manual sesuai target kamu
+  const maxDisplay = 5400;
 
   document.getElementById('avatarEl').textContent       = getInitials(student.name);
   document.getElementById('studentName').textContent    = student.name;
@@ -359,7 +343,6 @@ function showResult(student) {
     li.style.display = 'none';
   }
 
-  // ── Approval portfolio
   const approvalCard = document.getElementById('approvalCard');
   const approvalVal  = document.getElementById('approvalVal');
   const approvalSub  = document.getElementById('approvalSub');
@@ -368,22 +351,17 @@ function showResult(student) {
 
   const rawApproval = (student.approval || '')
     .toLowerCase()
-    .replace(/\u00A0/g, ' ')   // non-breaking space (sering ikut ke-copy dari Google Sheets) -> spasi biasa
-    .replace(/\s+/g, ' ')      // rapatkan spasi ganda
+    .replace(/\u00A0/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim();
 
   if (rawApproval === '') {
-    // Tidak ada data approval — sembunyikan card
     approvalCard.style.display = 'none';
     cardBody.classList.remove('has-approval');
   } else {
     approvalCard.style.display = 'block';
     cardBody.classList.add('has-approval');
 
-    // Cocokkan berdasarkan kata kunci (bukan exact match) supaya tahan terhadap
-    // typo kecil di sheet (mis. "Major Revisiom"), spasi ganda, atau beda kapitalisasi.
-    // Urutan pengecekan penting: yang paling spesifik dicek lebih dulu supaya
-    // "not approved" tidak ikut kena kata kunci "approved".
     if (rawApproval.includes('no submission') || rawApproval.includes('belum submit')) {
       approvalCard.className = 'metric-card approval-nosubmission';
       approvalIcon.textContent = '🚫';
@@ -410,7 +388,6 @@ function showResult(student) {
       approvalVal.textContent  = 'Approved';
       approvalSub.textContent  = 'Portfolio diterima';
     } else {
-      // Nilai lain / belum sempat diisi dropdown-nya dianggap pending review
       approvalCard.className = 'metric-card approval-pending';
       approvalIcon.textContent = '⏳';
       approvalVal.textContent  = student.approval;
@@ -446,8 +423,6 @@ searchInput.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') { this.value = ''; clearBtn.classList.remove('visible'); show('stateEmpty'); }
 });
 
-
-// Mulai load CSV saat halaman terbuka
 loadCSV();
 </script>
 </body>
