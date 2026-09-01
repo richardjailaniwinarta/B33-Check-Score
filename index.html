@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Score Lookup — Batch 32</title>
+<title>Student Score Lookup — Batch 34</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -156,7 +156,7 @@
 <body>
 
 <header>
-  <div class="badge">Batch 33</div>
+  <div class="badge">Batch 34</div>
   <h1>Student <span>Score</span><br>Lookup</h1>
   <p class="subtitle">Masukkan Student ID untuk melihat Total Score, Completion Rate, dan Approval Portfolio.</p>
 </header>
@@ -339,20 +339,20 @@
 </div>
 
 <footer>
-  Batch 33 . Made by Richard J Winarta &nbsp;·&nbsp; <code style="background:var(--surface2);padding:1px 5px;border-radius:4px">@assistby.rjw</code>
+  Batch 34 . Made by Richard J Winarta &nbsp;·&nbsp; <code style="background:var(--surface2);padding:1px 5px;border-radius:4px">@assistby.rjw</code>
 </footer>
 
 <script>
-const CSV_FILE_B33 = 'aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvZS8yUEFDWC0xdlNEVXZqQ3hDejdFQ1JXTTBUZ1h3U3Nmc01yQ1BpOTMtM093NXBWZVRFLXBkQ3VSQXNPRTVsZnpGUkVYR0ZncmVyZDF2OWlOemhpM0dJMi9wdWI/Z2lkPTgzNjU1MDQyNiZzaW5nbGU9dHJ1ZSZvdXRwdXQ9Y3N2';
-const CSV_FILE = atob(CSV_FILE_B33);
+const CSV_FILE_B34 = 'aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvZS8yUEFDWC0xdlJPX0xJVE1CRnNpZUVEdVI1azlHQ2JNQV9ndEdWM0xHUmFPdTFUNmRXdlk1SXlyUGtMLXJyeUlrMUhfNTdIemdJQ2tpU2pab292NlNCdC9wdWI/Z2lkPTgzNjU1MDQyNiZzaW5nbGU9dHJ1ZSZvdXRwdXQ9Y3N2';
+const CSV_FILE = atob(CSV_FILE_B34);
 
 // Kolom mana yang dipakai (index 0-based, sesuai urutan kolom di CSV)
-// Default sesuai struktur file B33:
+// Default sesuai struktur file B34:
 // 0=StudentID, 1=Name, 12=%Completion, 13=TotalScore, 16=Portfolio
 const COL = { id: 0, name: 1, completion: 12, score: 13, approval: 15, portfolio: 16 };
 
 // Baris header di CSV ada di baris ke berapa? (0-based)
-// File B33 punya 1 baris kosong di atas, lalu header di baris ke-1
+// File B34 punya 1 baris kosong di atas, lalu header di baris ke-1
 const HEADER_ROW = 1;
 // ───────────────────────────────────────────────────────────────────────────
 
@@ -630,8 +630,8 @@ searchInput.addEventListener('keydown', function(e) {
 // ══════════════════════════════════════════════════════════════════════════
 
 // CSV kedua: satu baris kosong, lalu header di baris ke-1 (0-based), sama seperti CSV utama.
-const CSV_FILE_TASKS_B33 = 'aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvZS8yUEFDWC0xdlNnSVphaGZOU0dKVmlSbWpObVVJSm82RlNmUXFwdmY5eUVHTFJ6VWtNYjJEdlNPOUgwY2l4WDE4T0p2c1J3alFwTHAxVWpKVkNhOHpZMS9wdWI/b3V0cHV0PWNzdg==';
-const CSV_FILE_TASKS = atob(CSV_FILE_TASKS_B33);
+const CSV_FILE_TASKS_B34 = 'aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvZS8yUEFDWC0xdlNnSVphaGZOU0dKVmlSbWpObVVJSm82RlNmUXFwdmY5eUVHTFJ6VWtNYjJEdlNPOUgwY2l4WDE4T0p2c1J3alFwTHAxVWpKVkNhOHpZMS9wdWI/b3V0cHV0PWNzdg==';
+const CSV_FILE_TASKS = atob(CSV_FILE_TASKS_B34);
 const HEADER_ROW_TASKS = 1;
 
 // Kolom-kolom profil di CSV kedua
@@ -818,34 +818,34 @@ function isValidLinkedInUrl(url) {
   return /^https:\/\/([a-z]{2,3}\.)?linkedin\.com\/.+/i.test(url.trim());
 }
 
-linkedinSubmitBtn.addEventListener('click', function() {
-  const url = linkedinInput.value.trim();
-  linkedinStatus.className = 'linkedin-status';
+// linkedinSubmitBtn.addEventListener('click', function() {
+//   const url = linkedinInput.value.trim();
+//   linkedinStatus.className = 'linkedin-status';
 
-  if (GOOGLE_SCRIPT_URL.includes('TEMPEL_URL_WEB_APP')) {
-    linkedinStatus.textContent = 'Belum dikonfigurasi: tempel URL Web App Apps Script di kode dulu.';
-    linkedinStatus.classList.add('error');
-    return;
-  }
-  if (!url) {
-    linkedinStatus.textContent = 'Link LinkedIn tidak boleh kosong.';
-    linkedinStatus.classList.add('error');
-    return;
-  }
-  if (!isValidLinkedInUrl(url)) {
-    linkedinStatus.textContent = 'Masukkan link LinkedIn yang valid (harus diawali https://linkedin.com/...).';
-    linkedinStatus.classList.add('error');
-    return;
-  }
-  if (!currentStudentId) {
-    linkedinStatus.textContent = 'Student ID tidak terdeteksi. Coba cari ulang ID kamu.';
-    linkedinStatus.classList.add('error');
-    return;
-  }
+//   if (GOOGLE_SCRIPT_URL.includes('TEMPEL_URL_WEB_APP')) {
+//     linkedinStatus.textContent = 'Belum dikonfigurasi: tempel URL Web App Apps Script di kode dulu.';
+//     linkedinStatus.classList.add('error');
+//     return;
+//   }
+//   if (!url) {
+//     linkedinStatus.textContent = 'Link LinkedIn tidak boleh kosong.';
+//     linkedinStatus.classList.add('error');
+//     return;
+//   }
+//   if (!isValidLinkedInUrl(url)) {
+//     linkedinStatus.textContent = 'Masukkan link LinkedIn yang valid (harus diawali https://linkedin.com/...).';
+//     linkedinStatus.classList.add('error');
+//     return;
+//   }
+//   if (!currentStudentId) {
+//     linkedinStatus.textContent = 'Student ID tidak terdeteksi. Coba cari ulang ID kamu.';
+//     linkedinStatus.classList.add('error');
+//     return;
+//   }
 
-  linkedinSubmitBtn.disabled = true;
-  linkedinSubmitBtn.textContent = 'Mengirim…';
-  linkedinStatus.textContent = '';
+//   linkedinSubmitBtn.disabled = true;
+//   linkedinSubmitBtn.textContent = 'Mengirim…';
+//   linkedinStatus.textContent = '';
 
   const studentName = lookup[currentStudentId] ? lookup[currentStudentId].name : '';
 
